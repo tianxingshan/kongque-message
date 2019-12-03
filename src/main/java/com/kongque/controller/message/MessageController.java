@@ -43,11 +43,10 @@ public class MessageController {
         return messageService.messagePush(dto);
     }
 
-    @PostMapping(value = "/message/test")
+    @GetMapping(value = "/message/test")
     private Result test(@RequestBody MessageDto dto){
-        Message message = new Message(dto);
-        int insert = dao.insert(message);
-        return new Result(insert);
+
+        return new Result();
     }
 
 }
