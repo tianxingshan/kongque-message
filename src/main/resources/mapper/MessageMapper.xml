@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kongque.dao.IMessageDao">
+    <resultMap id="message" type="com.kongque.entity.Message">
+        <result column="c_id" property="id" jdbcType="VARCHAR"></result>
+        <result column="c_content" property="content" jdbcType="VARCHAR"></result>
+        <result column="c_theme" property="theme" jdbcType="VARCHAR"></result>
+        <result column="c_create_time" property="createTime" jdbcType="TIMESTAMP"></result>
+        <result column="c_flag" property="flag" jdbcType="VARCHAR"></result>
+        <result column="c_push_time" property="pushTime" jdbcType="TIMESTAMP"></result>
+        <result column="c_user_id" property="userId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.kongque.entity.Message" useGeneratedKeys="true">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="BEFORE">
+            select REPLACE(UUID(),"-","") from dual
+        </selectKey>
+
+        INSERT INTO t_message ( c_id, c_content, c_theme, c_create_time, c_flag, c_push_time)
+        VALUES
+        (#{id},#{content},#{theme},#{createTime},#{flag},#{pushTime})
+    </insert>
+
+    <select id="getList" resultMap="message" parameterType="com.kongque.entity.Message">
+SELECT
+	t.c_id,
+	t.c_content,
+	t.c_theme,
+	t.c_create_time,
+	t.c_user_id,
+	t.c_flag,
+	t.c_push_time
+FROM
+	t_message t
+        <where>
+            <if test="userId != null and userId !=''">
+                t.c_user_id = #{userId}
+            </if>
+            <if test="flag !=null and flag !=''">
+                and t.c_flag = #{flag}
+            </if>
+            <if test="theme !=null and theme !=''">
+                and t.c_theme like  CONCAT('%',#{theme},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id" keyColumn="c_id">
+        INSERT INTO t_message ( c_id, c_content, c_theme, c_create_time,c_user_id, c_flag, c_push_time)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            #{item.id},
+            #{item.content},
+            #{item.theme},
+            #{item.createTime},
+            #{item.userId},
+            #{item.flag},
+            #{item.pushTime}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" separator=";" close="" open="">
+            UPDATE t_message
+            <set>
+                <if test="item.flag !=null and item.flag !=''">
+                    c_flag = #{item.flag},
+                </if>
+                <if test="item.pushTime !=null">
+                    c_push_time = #{item.pushTime}
+                </if>
+
+            </set>
+            <where>
+                <if test="item.id !=null and item.id !=''">
+                    c_id = #{item.id}
+                </if>
+            </where>
+        </foreach>
+    </update>
+</mapper>
