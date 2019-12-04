@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.kongque</groupId>
-    <artifactId>kongque-message-push</artifactId>
+    <artifactId>kongque-message</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kongque-message-push</name>
+    <name>kongque-message</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

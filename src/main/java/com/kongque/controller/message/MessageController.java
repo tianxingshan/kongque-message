@@ -1,9 +1,11 @@
 package com.kongque.controller.message;
 
+import com.kongque.constants.Constants;
 import com.kongque.dao.IMessageDao;
 import com.kongque.dto.MessageDto;
 import com.kongque.entity.Message;
 import com.kongque.service.IMessageService;
+import com.kongque.util.HttpClientUtil;
 import com.kongque.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +46,12 @@ public class MessageController {
     }
 
     @GetMapping(value = "/message/test")
-    private Result test(@RequestBody MessageDto dto){
+    private Result test(MessageDto dto){
 
-        return new Result();
+        String url = Constants.url;
+        dto.setContent("sunwnashan");
+
+        return new Result(dto);
     }
 
 }

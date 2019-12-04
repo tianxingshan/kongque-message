@@ -5,28 +5,28 @@ package com.kongque.util;
  */
 public class Result<T> {
 
-    private String code =  "200";
+    private String returnCode =  "200";
 
-    private String message = "操作成功";
+    private String returnMsg = "操作成功";
 
     private T returnData;
 
     private Long total = 0l;
 
-    public String getCode() {
-        return code;
+    public String getReturnCode() {
+        return returnCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setReturnCode(String returnCode) {
+        this.returnCode = returnCode;
     }
 
-    public String getMessage() {
-        return message;
+    public String getReturnMsg() {
+        return returnMsg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setReturnMsg(String returnMsg) {
+        this.returnMsg = returnMsg;
     }
 
     public T getReturnData() {
@@ -48,9 +48,9 @@ public class Result<T> {
     public Result() {
     }
 
-    public Result(String code, String message) {
-        this.code = code;
-        this.message = message;
+    public Result(String returnCode, String returnMsg) {
+        this.returnCode = returnCode;
+        this.returnMsg = returnMsg;
     }
 
     public Result(T returnData) {
