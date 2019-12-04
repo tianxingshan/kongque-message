@@ -109,7 +109,7 @@ public class KongqueWebSocket {
 
     /**
      * (监听方法,前后端的onMessage有变动便进行通信)
-     * 指定消息推送给指定在线的用户
+     * 推送消息 : 遍历推送的消息,遍历在线用户,在线则推送
      * @param dataDto
      */
     @OnMessage
@@ -121,7 +121,7 @@ public class KongqueWebSocket {
                 KongqueWebSocket kongqueWebSocket = webSocketMap.get(accountId);
                 if(kongqueWebSocket !=null){
                     kongqueWebSocket.sendObj(map.get(accountId));
-                    //跟新数据库
+                    //更新数据
                     updateMessage(map.get(accountId));
                     log.info("向用户accountId=" + accountId + "推送消息成功:" + "\n" + "消息:" + JSONArray.toJSONString(map.get(accountId)));
                 }

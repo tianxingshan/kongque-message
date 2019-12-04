@@ -12,7 +12,7 @@ import java.util.List;
 public interface IMessageService {
 
     /**
-     * 后台指定用户下发消息,如果用户在线,现在发送
+     * 后台指定用户下发消息,并推送给在线用户
      * @return
      */
     Result messagePush(MessageDto dto);

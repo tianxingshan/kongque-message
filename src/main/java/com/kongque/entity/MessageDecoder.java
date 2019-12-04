@@ -8,7 +8,7 @@ import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
 /**
- * 解密参数(接收参数时解密,例如onmessage等接收参数)
+ * 解码器(接收参数时解密,例如onmessage等接收参数)
  */
 public class MessageDecoder implements Decoder.Text<WebSockDataDto>{
     @Override

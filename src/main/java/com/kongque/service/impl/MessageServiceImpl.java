@@ -42,7 +42,7 @@ public class MessageServiceImpl  implements IMessageService {
         messageDao.insertBatch(messageList);
         logger.info("后台下发消息成功:\n消息名称:"+dto.getTheme()+"\n指定用户:"+Arrays.toString(dto.getUserIds()));
 
-        //处理发送消息,用户对应的消息集合
+        //处理消息,整理用户对应的消息集合(onmessage推送的时候判断用户在不在线)
         WebSockDataDto webSockDataDto = new WebSockDataDto();
         List<Map<String,List<Message>>> pushMapList = new ArrayList<>();
         for (String uid : userIdList) {
