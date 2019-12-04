@@ -10,14 +10,10 @@ import com.kongque.util.UUIDUtil;
 import com.kongque.ws.KongqueWebSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
 
 @Service
 public class MessageServiceImpl  implements IMessageService {
@@ -31,7 +27,7 @@ public class MessageServiceImpl  implements IMessageService {
     private KongqueWebSocket kongqueWebSocket;
 
     @Override
-    public Result messagePush(MessageDto dto) {
+    public Result messagePush(MessageDto dto){
 
         List<Message> messageList = new ArrayList<>();
         List<String> userIdList = Arrays.asList(dto.getUserIds());
@@ -46,7 +42,7 @@ public class MessageServiceImpl  implements IMessageService {
         messageDao.insertBatch(messageList);
         logger.info("后台下发消息成功:\n消息名称:"+dto.getTheme()+"\n指定用户:"+Arrays.toString(dto.getUserIds()));
 
-        //在线的用户发送过去
+        //处理发送消息,用户对应的消息集合
         WebSockDataDto webSockDataDto = new WebSockDataDto();
         List<Map<String,List<Message>>> pushMapList = new ArrayList<>();
         for (String uid : userIdList) {
@@ -62,13 +58,7 @@ public class MessageServiceImpl  implements IMessageService {
         }
         webSockDataDto.setMapList(pushMapList);
         kongqueWebSocket.onMessage(webSockDataDto);
-
-//        throw  new Exception("測試");
         return new Result<>();
     }
 
-    @Override
-    public List<Message> getList(MessageDto dto) {
-        return null;
-    }
 }

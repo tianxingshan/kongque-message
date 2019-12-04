@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -110,7 +109,7 @@ public class KongqueWebSocket {
 
     /**
      * (监听方法,前后端的onMessage有变动便进行通信)
-     * 指定消息推送给指定在线客户
+     * 指定消息推送给指定在线的用户
      * @param dataDto
      */
     @OnMessage

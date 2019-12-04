@@ -1,6 +1,5 @@
 package com.kongque.dto;
 
-import java.util.Arrays;
 import java.util.Date;
 
 public class MessageDto {

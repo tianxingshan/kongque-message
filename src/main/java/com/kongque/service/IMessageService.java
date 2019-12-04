@@ -17,9 +17,6 @@ public interface IMessageService {
      */
     Result messagePush(MessageDto dto);
 
-    /*
-    根据参数查询
-     */
-    List<Message> getList(MessageDto dto);
+
 
 }

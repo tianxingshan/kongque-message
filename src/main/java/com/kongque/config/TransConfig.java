@@ -6,7 +6,6 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.interceptor.*;
@@ -15,14 +14,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 声明式事物
+ */
 @Configuration
-@Component
 public class TransConfig {
 
     /*
     切面编程
      */
-    private static final String AOP_POINTCUT_Expression = "execution (* com.kongque.service..*(..))";
+    private static final String AOP_POINTCUT_Expression = "execution (* com.kongque.service..*.*(..))";
 
     @Autowired
     private PlatformTransactionManager transactionManager;
