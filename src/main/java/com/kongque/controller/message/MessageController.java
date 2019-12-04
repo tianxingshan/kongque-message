@@ -37,21 +37,12 @@ public class MessageController {
 
 
     /**
-     * 后台管理下发消息
+     * 后台管理下发消息,如果下发的用户在线,便立刻推送
      */
     @PostMapping(value = "/message/push")
     private Result messageToUser(@RequestBody MessageDto dto){
         logger.info("后台下发消息开始:\n消息名字:"+dto.getTheme()+"\n指定用户:"+ Arrays.toString(dto.getUserIds()));
         return messageService.messagePush(dto);
-    }
-
-    @GetMapping(value = "/message/test")
-    private Result test(MessageDto dto){
-
-        String url = Constants.url;
-        dto.setContent("sunwnashan");
-
-        return new Result(dto);
     }
 
 }
