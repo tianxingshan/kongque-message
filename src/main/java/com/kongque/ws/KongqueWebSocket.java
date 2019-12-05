@@ -53,7 +53,7 @@ public class KongqueWebSocket {
 
     /**
      * 连接建立成功调用的方法
-     * 说明: 建立通信时,检查是否有未推送消息,有则推送
+     * 说明: 建立通信时,检查是否有未推送消息,有则推送,并验证token
      *
      * @param session 可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
@@ -62,7 +62,6 @@ public class KongqueWebSocket {
         this.session = session;
         webSocketMap.put(accountId, this);
         log.info("用户accountId=" + accountId + "开始接入socket,当前通信人数为:" + webSocketMap.size());
-
         messageDao = applicationContext.getBean("IMessageDao", IMessageDao.class);
         MessageDto dto = new MessageDto();
         dto.setUserId(accountId);
@@ -102,9 +101,9 @@ public class KongqueWebSocket {
      */
     @OnClose
     public void onClose(@PathParam(value = "accountId") String accountId) {
-        webSocketMap.remove(accountId);
-        log.info("websocket关闭连接");
-        log.info("用户下线,accountId:" + accountId + "目前在线用户数 : " + webSocketMap.size());
+            webSocketMap.remove(accountId);
+            log.info("websocket关闭连接");
+            log.info("用户下线,accountId:" + accountId + "目前在线用户数 : " + webSocketMap.size());
     }
 
     /**

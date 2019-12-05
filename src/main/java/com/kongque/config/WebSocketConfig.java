@@ -10,6 +10,9 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 @Configuration
 public class WebSocketConfig {
 
+    /*
+    创建节点类
+     */
     @Bean
     public ServerEndpointExporter createServerEndExporter(){
         return new ServerEndpointExporter();
