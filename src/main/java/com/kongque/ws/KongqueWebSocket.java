@@ -54,18 +54,10 @@ public class KongqueWebSocket {
         KongqueWebSocket.applicationContext = applicationContext;
     }
 
-    /**
-     * 连接建立成功调用的方法
-     * 说明: 建立通信时,检查是否有未推送消息,有则推送,并验证token
-     *
-     * @param session 可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
+    /*
+    验证token
      */
-    @OnOpen
-    public void onOpen(Session session, @PathParam(value = "accountId") String accountId,@PathParam(value = "token") String token) {
-
-        this.session = session;
-        webSocketMap.put(accountId, this);
-
+    private void checkToen(String token,String accountId){
         Map<String,String> verifyMap = new HashMap<>();
         verifyMap.put("token", token);
         String resp = HttpClientUtil.doGet(Constants.url, verifyMap);
@@ -78,7 +70,20 @@ public class KongqueWebSocket {
             w.setTokenCheckResult(resp);
             onMessage(w);
         }
+    }
 
+    /**
+     * 连接建立成功调用的方法
+     * 说明: 建立通信时,检查是否有未推送消息,有则推送,并验证token
+     *
+     * @param session 可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
+     */
+    @OnOpen
+    public void onOpen(Session session, @PathParam(value = "accountId") String accountId,@PathParam(value = "token") String token) {
+
+        this.session = session;
+        webSocketMap.put(accountId, this);
+        checkToen(token, accountId);
         log.info("用户accountId=" + accountId + "开始接入socket,当前通信人数为:" + webSocketMap.size());
         messageDao = applicationContext.getBean("IMessageDao", IMessageDao.class);
         MessageDto dto = new MessageDto();
@@ -131,12 +136,13 @@ public class KongqueWebSocket {
      */
     @OnMessage
     public void onMessage(WebSockDataDto dataDto) {
+        //验证token
         if(dataDto.isTokenFlag()){
             String accountId = dataDto.getAccountId();
             KongqueWebSocket kongqueWebSocket = webSocketMap.get(accountId);
             JSONObject js = JSONObject.parseObject(dataDto.getTokenCheckResult());
             try {
-                kongqueWebSocket.session.getBasicRemote().sendObject(new Result<>(js));
+                kongqueWebSocket.session.getBasicRemote().sendObject(new Result<>(js.getString("returnCode"),js.getString("returnMsg")));
                 onClose(accountId);
             } catch (EncodeException | IOException e) {
                 log.error("token验证消息推送失败", e);
