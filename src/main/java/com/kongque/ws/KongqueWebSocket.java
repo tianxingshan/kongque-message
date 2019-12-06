@@ -2,12 +2,15 @@ package com.kongque.ws;
 
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.kongque.constants.Constants;
 import com.kongque.dao.IMessageDao;
 import com.kongque.dto.MessageDto;
 import com.kongque.dto.WebSockDataDto;
 import com.kongque.entity.Message;
 import com.kongque.entity.MessageDecoder;
 import com.kongque.entity.MessageEncoder;
+import com.kongque.util.HttpClientUtil;
 import com.kongque.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * websocket服务
  */
-@ServerEndpoint(value = "/ws/{accountId}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
+@ServerEndpoint(value = "/ws/{accountId}/{token}", encoders = MessageEncoder.class, decoders = MessageDecoder.class)
 @Component
 public class KongqueWebSocket {
 
@@ -58,9 +61,24 @@ public class KongqueWebSocket {
      * @param session 可选的参数。session为与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
     @OnOpen
-    public void onOpen(Session session, @PathParam(value = "accountId") String accountId) {
+    public void onOpen(Session session, @PathParam(value = "accountId") String accountId,@PathParam(value = "token") String token) {
+
         this.session = session;
         webSocketMap.put(accountId, this);
+
+        Map<String,String> verifyMap = new HashMap<>();
+        verifyMap.put("token", token);
+        String resp = HttpClientUtil.doGet(Constants.url, verifyMap);
+        JSONObject js = JSONObject.parseObject(resp);
+        if(!js.get("returnCode").equals("200")){
+            log.info(resp);
+            WebSockDataDto w = new WebSockDataDto();
+            w.setTokenFlag(true);
+            w.setAccountId(accountId);
+            w.setTokenCheckResult(resp);
+            onMessage(w);
+        }
+
         log.info("用户accountId=" + accountId + "开始接入socket,当前通信人数为:" + webSocketMap.size());
         messageDao = applicationContext.getBean("IMessageDao", IMessageDao.class);
         MessageDto dto = new MessageDto();
@@ -113,6 +131,17 @@ public class KongqueWebSocket {
      */
     @OnMessage
     public void onMessage(WebSockDataDto dataDto) {
+        if(dataDto.isTokenFlag()){
+            String accountId = dataDto.getAccountId();
+            KongqueWebSocket kongqueWebSocket = webSocketMap.get(accountId);
+            JSONObject js = JSONObject.parseObject(dataDto.getTokenCheckResult());
+            try {
+                kongqueWebSocket.session.getBasicRemote().sendObject(new Result<>(js));
+                onClose(accountId);
+            } catch (EncodeException | IOException e) {
+                log.error("token验证消息推送失败", e);
+            }
+        }
 
         List<Map<String, List<Message>>> mapList = dataDto.getMapList();
         for (Map<String, List<Message>> map :mapList) {

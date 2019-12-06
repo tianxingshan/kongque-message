@@ -5,7 +5,17 @@ import com.kongque.entity.Message;
 import java.util.List;
 import java.util.Map;
 
+
 public class WebSockDataDto {
+
+    /*
+    验证token标识  true-返回验证token的结果
+     */
+    private boolean tokenFlag;
+
+    private String accountId;
+
+    private String tokenCheckResult;
 
     private List<Message> messageList;
 
@@ -35,5 +45,29 @@ public class WebSockDataDto {
 
     public void setMapList(List<Map<String, List<Message>>> mapList) {
         this.mapList = mapList;
+    }
+
+    public boolean isTokenFlag() {
+        return tokenFlag;
+    }
+
+    public void setTokenFlag(boolean tokenFlag) {
+        this.tokenFlag = tokenFlag;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getTokenCheckResult() {
+        return tokenCheckResult;
+    }
+
+    public void setTokenCheckResult(String tokenCheckResult) {
+        this.tokenCheckResult = tokenCheckResult;
     }
 }

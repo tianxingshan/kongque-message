@@ -18,11 +18,14 @@ import java.util.Map;
 /*
 websocket拦截器
  */
-@Component
+//@Component
 public class WebSocketHandlerShakeInterceptor implements HandshakeInterceptor {
 
     private final static Logger logger = LoggerFactory.getLogger(WebSocketHandlerShakeInterceptor.class);
 
+    /*
+    握手前
+     */
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         ServletServerHttpRequest servletRequest = (ServletServerHttpRequest)request;
@@ -40,11 +43,9 @@ public class WebSocketHandlerShakeInterceptor implements HandshakeInterceptor {
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
-
+        System.out.println("握手后");
     }
 
-    /**
-     握手前拦截
-     */
-
+    public WebSocketHandlerShakeInterceptor() {
+    }
 }

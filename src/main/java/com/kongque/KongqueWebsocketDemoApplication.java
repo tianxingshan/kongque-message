@@ -1,5 +1,6 @@
 package com.kongque;
 
+import com.kongque.config.WebSocketHandShakeConfig;
 import com.kongque.ws.KongqueWebSocket;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
