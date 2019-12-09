@@ -29,7 +29,7 @@ public class MessageDto {
     private Date createTime;
 
     /*
-    推送标识
+    推送标识 0:未推送 1:已推送
      */
     private String flag;
 
@@ -42,6 +42,15 @@ public class MessageDto {
     指定推送用户ids
      */
     private String [] userIds;
+
+    /*
+    页码
+     */
+    private Integer page;
+    /*
+    每页条数
+     */
+    private Integer pageSize;
 
 
     public String getId() {
@@ -114,5 +123,21 @@ public class MessageDto {
     public MessageDto(String userId,String flag) {
         this.userId = userId;
         this.flag = flag;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

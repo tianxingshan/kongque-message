@@ -57,19 +57,20 @@ public class KongqueWebSocket {
     /*
     验证token
      */
-    private void checkToen(String token,String accountId){
+    private boolean checkToen(String token,String accountId){
         Map<String,String> verifyMap = new HashMap<>();
         verifyMap.put("token", token);
         String resp = HttpClientUtil.doGet(Constants.url, verifyMap);
         JSONObject js = JSONObject.parseObject(resp);
         if(!js.get("returnCode").equals("200")){
-            log.info(resp);
             WebSockDataDto w = new WebSockDataDto();
             w.setTokenFlag(true);
             w.setAccountId(accountId);
             w.setTokenCheckResult(resp);
             onMessage(w);
+            return false;
         }
+        return true;
     }
 
     /**
@@ -83,7 +84,10 @@ public class KongqueWebSocket {
 
         this.session = session;
         webSocketMap.put(accountId, this);
-        checkToen(token, accountId);
+        boolean checkboolean = checkToen(token, accountId);
+        if(!checkboolean){
+            return;
+        }
         log.info("用户accountId=" + accountId + "开始接入socket,当前通信人数为:" + webSocketMap.size());
         messageDao = applicationContext.getBean("IMessageDao", IMessageDao.class);
         MessageDto dto = new MessageDto();
@@ -125,8 +129,8 @@ public class KongqueWebSocket {
     @OnClose
     public void onClose(@PathParam(value = "accountId") String accountId) {
             webSocketMap.remove(accountId);
-            log.info("websocket关闭连接");
-            log.info("用户下线,accountId:" + accountId + "目前在线用户数 : " + webSocketMap.size());
+             log.info("websocket关闭连接");
+            log.info("用户" + accountId + "下线,当前在线用户数 : " + webSocketMap.size());
     }
 
     /**
@@ -144,6 +148,7 @@ public class KongqueWebSocket {
             try {
                 kongqueWebSocket.session.getBasicRemote().sendObject(new Result<>(js.getString("returnCode"),js.getString("returnMsg")));
                 onClose(accountId);
+                return;
             } catch (EncodeException | IOException e) {
                 log.error("token验证消息推送失败", e);
             }

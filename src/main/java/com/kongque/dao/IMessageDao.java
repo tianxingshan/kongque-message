@@ -20,6 +20,11 @@ public interface IMessageDao {
     List<Message> getList(MessageDto dto);
 
     /*
+    获取总数
+     */
+    int getCount(MessageDto dto);
+
+    /*
     批量添加
      */
     int insertBatch(List<Message> list);

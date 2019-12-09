@@ -23,7 +23,7 @@
         (#{id},#{content},#{theme},#{createTime},#{flag},#{pushTime})
     </insert>
 
-    <select id="getList" resultMap="message" parameterType="com.kongque.entity.Message">
+    <select id="getList" resultMap="message" parameterType="com.kongque.dto.MessageDto">
 SELECT
 	t.c_id,
 	t.c_content,
@@ -34,6 +34,24 @@ SELECT
 	t.c_push_time
 FROM
 	t_message t
+        <where>
+            <if test="userId != null and userId !=''">
+                t.c_user_id = #{userId}
+            </if>
+            <if test="flag !=null and flag !=''">
+                and t.c_flag = #{flag}
+            </if>
+            <if test="theme !=null and theme !=''">
+                and t.c_theme like  CONCAT('%',#{theme},'%')
+            </if>
+        </where>
+        <if test="page !=null">
+            LIMIT #{page},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getCount" parameterType="com.kongque.dto.MessageDto" resultType="java.lang.Integer">
+        select count(1) from t_message t
         <where>
             <if test="userId != null and userId !=''">
                 t.c_user_id = #{userId}

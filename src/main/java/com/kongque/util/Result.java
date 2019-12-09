@@ -11,7 +11,7 @@ public class Result<T> {
 
     private T returnData;
 
-    private Long total = 0l;
+    private int total = 0;
 
     public String getReturnCode() {
         return returnCode;
@@ -37,11 +37,11 @@ public class Result<T> {
         this.returnData = returnData;
     }
 
-    public Long getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(Long total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
