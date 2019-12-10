@@ -33,7 +33,8 @@ public class MessageController {
 
 
     /**
-     * 后台管理下发消息,如果下发的用户在线,便立刻推送
+     * 后台管理下发消息
+     * Params : userIds [] ,theme,content
      */
     @PostMapping(value = "/message/push")
     private Result messageToUser(@RequestBody MessageDto dto){

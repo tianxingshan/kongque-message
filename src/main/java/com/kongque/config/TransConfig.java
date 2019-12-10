@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 声明式事物
  */
-//@Configuration
+@Configuration
 public class TransConfig {
 
     /*
