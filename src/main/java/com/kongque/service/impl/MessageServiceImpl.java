@@ -64,6 +64,10 @@ public class MessageServiceImpl  implements IMessageService {
     @Override
     public Result<List<Message>> getList(MessageDto dto) {
         Result result = new Result();
+        if(dto.getPage()==null){
+            dto.setPage(1);
+            dto.setPageSize(10);
+        }
         Integer idex = (dto.getPage()-1)*dto.getPageSize();
         dto.setPage(idex);
         List<Message> list = messageDao.getList(dto);
