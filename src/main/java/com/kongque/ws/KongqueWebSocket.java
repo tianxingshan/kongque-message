@@ -64,7 +64,7 @@ public class KongqueWebSocket {
         JSONObject js = JSONObject.parseObject(resp);
         if(!js.get("returnCode").equals("200")){
             WebSockDataDto w = new WebSockDataDto();
-            w.setTokenFlag(true);
+            w.setDealTokenFlag(true);
             w.setAccountId(accountId);
             w.setTokenCheckResult(resp);
             onMessage(w);
@@ -133,6 +133,7 @@ public class KongqueWebSocket {
             log.info("用户" + accountId + "下线,当前在线用户数 : " + webSocketMap.size());
     }
 
+
     /**
      * (监听方法,前后端的onMessage有变动便进行通信)
      * 推送消息 : 遍历推送的消息,遍历在线用户,在线则推送
@@ -140,8 +141,8 @@ public class KongqueWebSocket {
      */
     @OnMessage
     public void onMessage(WebSockDataDto dataDto) {
-        //验证token
-        if(dataDto.isTokenFlag()){
+        //token业务,当token验证失败时返回前端信息
+        if(dataDto.getDealTokenFlag()){
             String accountId = dataDto.getAccountId();
             KongqueWebSocket kongqueWebSocket = webSocketMap.get(accountId);
             JSONObject js = JSONObject.parseObject(dataDto.getTokenCheckResult());
@@ -154,6 +155,7 @@ public class KongqueWebSocket {
             }
         }
 
+        //用户上线时推送业务
         List<Map<String, List<Message>>> mapList = dataDto.getMapList();
         for (Map<String, List<Message>> map :mapList) {
             for (String accountId :map.keySet()) {

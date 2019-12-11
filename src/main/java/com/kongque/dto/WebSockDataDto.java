@@ -9,9 +9,10 @@ import java.util.Map;
 public class WebSockDataDto {
 
     /*
-    验证token标识  true-返回验证token的结果
-     */
-    private boolean tokenFlag;
+        onmessage方法是否处理token标识 true-处理 false-不处理
+
+      */
+    private Boolean dealTokenFlag =false;
 
     private String accountId;
 
@@ -47,12 +48,12 @@ public class WebSockDataDto {
         this.mapList = mapList;
     }
 
-    public boolean isTokenFlag() {
-        return tokenFlag;
+    public Boolean getDealTokenFlag() {
+        return dealTokenFlag;
     }
 
-    public void setTokenFlag(boolean tokenFlag) {
-        this.tokenFlag = tokenFlag;
+    public void setDealTokenFlag(Boolean dealTokenFlag) {
+        this.dealTokenFlag = dealTokenFlag;
     }
 
     public String getAccountId() {

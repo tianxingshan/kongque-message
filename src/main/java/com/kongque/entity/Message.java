@@ -2,6 +2,7 @@ package com.kongque.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kongque.dto.MessageDto;
+import com.kongque.util.UUIDUtil;
 
 import java.util.Date;
 
@@ -101,6 +102,7 @@ public class Message {
     }
 
     public Message(MessageDto dto) {
+        this.id= UUIDUtil.getUUID32();
         this.theme = dto.getTheme();
         this.content=dto.getContent();
     }

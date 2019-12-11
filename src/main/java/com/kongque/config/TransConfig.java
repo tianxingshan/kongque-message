@@ -23,7 +23,9 @@ public class TransConfig {
     /*
     切面编程
      */
-    private static final String AOP_POINTCUT_Expression = "execution (* com.kongque.service..*.*(..))";
+    private static final String AOP_POINTCUT_Expression = "execution (* com.kongque.service..*.*(..)) || execution (* com.kongque.dao..*.*(..))";
+
+
 
     @Autowired
     private PlatformTransactionManager transactionManager;
