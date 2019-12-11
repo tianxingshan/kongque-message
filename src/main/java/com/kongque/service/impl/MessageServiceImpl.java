@@ -114,4 +114,18 @@ public class MessageServiceImpl  implements IMessageService {
         return result;
     }
 
+    @Override
+    public void test() {
+
+        Message m = new Message();
+        m.setContent("通过");
+        m.setId(UUIDUtil.getUUID32());
+        messageDao.insert(m);
+
+        Message message1 = new Message();
+        message1.setContent("失败水电费水电费个1234545456s失败");
+        message1.setId(UUIDUtil.getUUID32());
+        messageDao.insert(message1);
+    }
+
 }

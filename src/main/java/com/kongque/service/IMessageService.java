@@ -22,6 +22,8 @@ public interface IMessageService {
      */
     Result<List<Message>> getList(MessageDto dto);
 
+    void test();
+
 
 
 }
