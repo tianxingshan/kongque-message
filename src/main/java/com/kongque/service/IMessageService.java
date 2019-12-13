@@ -21,9 +21,4 @@ public interface IMessageService {
     查看已经推送的消息
      */
     Result<List<Message>> getList(MessageDto dto);
-
-    void test();
-
-
-
 }
