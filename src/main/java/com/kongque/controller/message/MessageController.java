@@ -53,10 +53,4 @@ public class MessageController {
         return  messageService.getList(dto);
     }
 
-    @GetMapping(value = "/message/test")
-    public void testTrans(){
-        messageService.test();
-    }
-
-
 }
