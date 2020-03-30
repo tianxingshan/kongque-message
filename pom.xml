@@ -82,20 +82,20 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.8.3</version>
         </dependency>
-        <!--整合redis-->
+        <!--整合redis,reidsTemplete(还有一种方式是使用jedis)-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 
-    <!--配置文件-->
+    <!--配置启动环境-->
     <profiles>
         <profile>
             <id>dev</id>
             <!--引用的文件-->
             <properties>
-                <activ.profile>dev</activ.profile>
+                <activ.profile>dev</activ.profile><!--激活application-*.properties文件-->
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -112,9 +112,11 @@
         </profile>
     </profiles>
 
+    <!--安装时要bulid-->
     <build>
         <finalName>${name}</finalName>
         <filters>
+            <!--只打包选择的application-*.properties-->
             <filter>src/main/resources/application-${activ.profile}.properties</filter>
         </filters>
         <resources>
@@ -127,39 +129,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.0.1.RELEASE</version>
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
