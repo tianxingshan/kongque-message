@@ -24,7 +24,7 @@ public class LogInterceptor  implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         //获取token
-        String token = request.getHeader("token");
+       /* String token = request.getHeader("token");
         response.setContentType("application/json");//设置响应的内容类型json字符串
         response.setHeader("Access-Control-Allow-origin", "*");//设置允许浏览器允许跨域访问
         response.setCharacterEncoding("utf-8");
@@ -48,7 +48,7 @@ public class LogInterceptor  implements HandlerInterceptor{
             out.flush();
             return  false;
         }
-        logger.info("校验成功");
+        logger.info("校验成功");*/
         return true;
     }
 
