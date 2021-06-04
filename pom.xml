@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <httpclinet.version>4.5.6</httpclinet.version>
+        <httpclinet.version>4.5.13</httpclinet.version>
     </properties>
 
     <dependencies>
